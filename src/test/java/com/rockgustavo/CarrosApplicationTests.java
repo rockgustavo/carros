@@ -1,13 +1,12 @@
 package com.rockgustavo;
 
+import static org.assertj.core.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
-import java.util.Optional;
 
+import org.hibernate.ObjectNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,10 +34,9 @@ class CarrosApplicationTests {
 		assertNotNull(id);
 		
 		// Buscar o objeto
-		Optional<CarroDTO> op = service.getCarroById(id);
-		assertTrue(op.isPresent());
+		c = service.getCarroById(id);
+		assertNotNull(c);
 		
-		c = op.get();
 		assertEquals("Ferrari", c.getNome());
 		assertEquals("esportivos", c.getTipo());
 		
@@ -46,7 +44,12 @@ class CarrosApplicationTests {
 		service.delete(id);
 		
 		// Verificar se deletou
-		assertFalse(service.getCarroById(id).isPresent());
+		try {
+			assertNotNull(service.getCarroById(id));
+			fail("O carro não foi excluído!");
+		} catch (ObjectNotFoundException e) {
+			// Ok
+		}
 	}
 	
 	@Test
@@ -54,18 +57,14 @@ class CarrosApplicationTests {
 		
 		List<CarroDTO> carros = service.getCarros();
 		
-		assertEquals(32, carros.size());
+		assertEquals(31, carros.size());
 	}
 	
 	@Test
 	public void testGet() {
 		
-		Optional<CarroDTO> op = service.getCarroById(11L);
-		System.out.println(op);
-		
-		assertTrue(op.isPresent());
-		
-		CarroDTO c = op.get();
+		CarroDTO c = service.getCarroById(11L);
+		assertNotNull(c);
 		
 		assertEquals("Ferrari FF", c.getNome());
 	}

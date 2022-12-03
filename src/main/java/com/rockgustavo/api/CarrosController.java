@@ -2,7 +2,6 @@ package com.rockgustavo.api;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,9 +34,9 @@ public class CarrosController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<CarroDTO> getById(@PathVariable("id") Long id) {
-		Optional<CarroDTO> carro = service.getCarroById(id);
+		CarroDTO carro = service.getCarroById(id);
 
-		return carro.isPresent() ? ResponseEntity.ok(carro.get()) : ResponseEntity.notFound().build();
+		return ResponseEntity.ok(carro);
 
 //		if (carro.isPresent()) {
 //			return ResponseEntity.ok(carro.get());
@@ -57,34 +56,24 @@ public class CarrosController {
 
 	@PostMapping
 	public ResponseEntity<List<CarroDTO>> salvar(@RequestBody Carro carro) {
-		try {
-			CarroDTO c = service.save(carro);
-			
-			URI location = getUri(c.getId());
-			return ResponseEntity.created(location).build();
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().build();
-		}
+		CarroDTO c = service.save(carro);
+
+		URI location = getUri(c.getId());
+		return ResponseEntity.created(location).build();
 
 	}
 
 	private URI getUri(Long id) {
-		return ServletUriComponentsBuilder
-				.fromCurrentRequest()
-				.path("/{id}")
-				.buildAndExpand(id)
-				.toUri();
+		return ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri();
 	}
 
 	@PutMapping("/{id}")
 	public ResponseEntity<CarroDTO> update(@PathVariable("id") Long id, @RequestBody Carro carro) {
 		try {
 			carro.setId(id);
-			
+
 			CarroDTO c = service.update(carro, id);
-			return c != null ? 
-					ResponseEntity.ok(c) : 
-					ResponseEntity.notFound().build();
+			return c != null ? ResponseEntity.ok(c) : ResponseEntity.notFound().build();
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().build();
 		}
@@ -93,10 +82,8 @@ public class CarrosController {
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<CarroDTO> delete(@PathVariable("id") Long id) {
-		boolean ok = service.delete(id);
-		return ok ? 
-				ResponseEntity.ok().build() : 
-				ResponseEntity.notFound().build();
+		service.delete(id);
+		return ResponseEntity.ok().build();
 
 	}
 

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import com.rockgustavo.api.exception.ObjectNotFoundException;
 import com.rockgustavo.domain.dto.CarroDTO;
 
 @Service
@@ -33,7 +34,7 @@ public class CarroService {
 		return repository.findByTipo(tipo).stream().map(CarroDTO::create).collect(Collectors.toList());
 	}
 
-	public Optional<CarroDTO> getCarroById(long id) {
+	public CarroDTO getCarroById(long id) {
 //		Optional<Carro> carro = repository.findById(id);
 //		if(carro.isPresent()) {
 //			return Optional.of(new CarroDTO(carro.get()));
@@ -43,12 +44,15 @@ public class CarroService {
 //		C/ lambdas
 //		return carro.map(c -> Optional.of(new CarroDTO(carro.get())).orElse(null));
 
-		return repository.findById(id).map(CarroDTO::create); //.map(c -> new CarroDTO(c))
+		return repository.findById(id)
+				.map(CarroDTO::create)
+				.orElseThrow(() -> 
+					new ObjectNotFoundException("Carro não encontrado!")); //.map(c -> new CarroDTO(c))
 		
-
 	}
 
 	public CarroDTO save(Carro carro) {
+		System.out.println(carro.getId());
 		Assert.isNull(carro.getId(), "Não foi possível atualizar o registro");
 		
 		return CarroDTO.create(repository.save(carro));
@@ -74,15 +78,16 @@ public class CarroService {
 		}
 	}
 
-	public boolean delete(Long id) {
-		// Busca o carro no banco de dados
-		Optional<CarroDTO> optional = getCarroById(id);
-		if (optional.isPresent()) {
-			repository.deleteById(id);
-			return true;
-		}
-		return false;
-		
+	public void delete(Long id) {
+//		// Busca o carro no banco de dados
+//		Optional<CarroDTO> optional = getCarroById(id);
+//		if (optional.isPresent()) {
+//			repository.deleteById(id);
+//			return true;
+//		}
+//		return false;
+
+		repository.deleteById(id);
 	}
 
 	/*
