@@ -1,13 +1,11 @@
 insert into role(id,nome) values (1, 'ROLE_USER');
 insert into role(id,nome) values (2, 'ROLE_ADMIN');
 
-insert into user(id,nome,email,login,senha) values (1,'Ricardo Lecheta','rlecheta@gmail.com','rlecheta','$2a$10$HKveMsPlst41Ie2LQgpijO691lUtZ8cLfcliAO1DD9TtZxEpaEoJe');
-insert into user(id,nome,email,login,senha) values (2,'Admin','admin@gmail.com','admin','$2a$10$HKveMsPlst41Ie2LQgpijO691lUtZ8cLfcliAO1DD9TtZxEpaEoJe');
-insert into user(id,nome,email,login,senha) values (3,'User','user@gmail.com','user','$2a$10$HKveMsPlst41Ie2LQgpijO691lUtZ8cLfcliAO1DD9TtZxEpaEoJe');
+insert into user(nome,email,login,senha) values ('Gustavo','gustavo@email.com','gustavo','$2a$10$08KLwASX6CZIGYxQ.IKdl.cko0BHnZkC4qaFxc0/FjBTqmt7twuVq');
+insert into user(nome,email,login,senha) values ('Admin','admin@email.com','admin','$2a$10$7iNAxwjVR92O4m9XHSJsz.g/qbgdvQUFMBWsSNpfAYBnkJdnc94Ku');
 
 insert into user_roles(user_id,role_id) values(1, 1);
 insert into user_roles(user_id,role_id) values(2, 2);
-insert into user_roles(user_id,role_id) values(3, 1);
 
 insert into carro (nome,descricao,url_foto,url_video,latitude,longitude,tipo) VALUES('Tucker 1948','Descrição Tucker 1948','http://www.livroandroid.com.br/livro/carros/classicos/Tucker.png','http://www.livroandroid.com.br/livro/carros/classicos/tucker.mp4','-23.564224','-46.653156','classicos');
 insert into carro (nome,descricao,url_foto,url_video,latitude,longitude,tipo) VALUES('Chevrolet Corvette','Descrição Chevrolet Corvette','http://www.livroandroid.com.br/livro/carros/classicos/Chevrolet_Corvette.png','http://www.livroandroid.com.br/livro/carros/classicos/corvette.mp4','-23.564224','-46.653156','classicos');

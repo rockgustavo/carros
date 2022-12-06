@@ -10,6 +10,7 @@ import org.hibernate.ObjectNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 
 import com.rockgustavo.domain.Carro;
 import com.rockgustavo.domain.CarroService;
@@ -17,6 +18,7 @@ import com.rockgustavo.domain.dto.CarroDTO;
 
 @SpringBootTest
 class CarrosApplicationTests {
+	protected TestRestTemplate rest;
 
 	@Autowired
 	private CarroService service;
@@ -42,6 +44,7 @@ class CarrosApplicationTests {
 		
 		// Deletar o objeto
 		service.delete(id);
+//		rest.withBasicAuth("admin", "admin").delete("locale");
 		
 		// Verificar se deletou
 		try {
@@ -57,7 +60,7 @@ class CarrosApplicationTests {
 		
 		List<CarroDTO> carros = service.getCarros();
 		
-		assertEquals(31, carros.size());
+		assertEquals(33, carros.size());
 	}
 	
 	@Test
